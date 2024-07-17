@@ -1,0 +1,13 @@
+
+FC = mpifort
+CC = /custom/software/miniconda3/envs/radev/bin/x86_64-conda_cos6-linux-gnu-cc
+
+DEFAULT = opt
+DEBUG = dbg
+VERSIONS = $(DEFAULT) $(DEBUG)
+RAYLEIGH_INC = -I/custom/software/miniconda3/envs/radev/include
+MKL_LIB = -L/custom/software/miniconda3/envs/radev/lib -Wl,--no-as-needed -lmkl_gf_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl
+FFLAGS_$(DEFAULT) = -O3 -ffixed-line-length-132 -DGNU_COMPILER -march=skylake $(RAYLEIGH_INC)
+LIB_$(DEFAULT) = $(MKL_LIB) -lstdc++
+FFLAGS_$(DEBUG) = -O0 -g -fbounds-check -ffpe-trap=invalid,zero,overflow -fbacktrace -ffixed-line-length-132 -DGNU_COMPILER $(RAYLEIGH_INC)
+LIB_$(DEBUG) = $(MKL_LIB) -lstdc++

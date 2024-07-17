@@ -1,0 +1,18 @@
+Notes:
+1.  Remember that in src/Include, the file indices.F defines things like RHSP, IDX, PSI, FIELDSP, etc.
+2.  The various variables like dvrdt (d vr by dtheta) are declared in Fields.F90  .  dtdt is (d temperature by dtheta)
+3.  For the second derivatives needed for diffusion terms, d2Xdr2 is stored in memory as needed (see Fields.F90), but 
+    things second derivatives with respect to theta and phi are not.  Those are only needed when del^2 is applied.
+    For spherical harmonics, the horizontal piece (i.e., neglecting radius) of del^2 applied to A SCALAR variable
+    is just -l(l+1)/r^2 times that variable.  This value l(l+1)/r^2  (no negative sign) is stored in the 
+    htvar, hvr, hvtheta, hvphi indices of the fields buffer.
+4.  Try to use the macros (IDX, PSI, DO_IDX, FIELDSP, RHSP, etc.) whenever possible.  This really helps
+    avoid typos. FORTRAN is not case sensitive EXCEPT for when using the macros.  Beware that idx != IDX
+5.  rhovar is ln(density)   not density.  drhodr is d(lnrho)/dr etc.
+6.  The advection routines are always called first for each variable.  These routines INITIALIZE RHSP (P -> RHS in Physical space).
+    All other routines should ADD to RHSP.
+7.  The diffusion terms for velocity will be trickiest, since that's a vector.  T-diffusion should be straightforward since its a scalar.   I realized after almost finishing this that we need second derivatives of velocity in theta and phi after all to deal with the gradient of div dot u (needed for velocity diffusion).  See my notes in the velocity diffusion about what you should try to go aheand and code. I will deal with the complicated bits that remain when I'm back.   
+8.  Viscous heating will be a little tough, but not too bad.   You can probably grab a lot of code from what's already there in old viscous heating routine (that basically computes the PHI term in the temperature equation).  Maybe see if Mike Calkins is around to chat if you get stuck there.
+
+
+This is probably all I will get to this week, but you should have a good framework to work within.  If you have questions, email me.  If you get stuck, try to work on another bit since my response time will be slow.   

@@ -1,0 +1,19 @@
+When building:
+1.)  Clone the master branch of the Rayleigh code (not Nick's fork)
+2.)  Clone the racomp repo
+3.)  Copy the master patch into your directory:
+     cp /path/to/racomp/patch/* /path/to/racomp/patch_fredy/.
+3.)  Configure Rayleigh with the following command:
+        ./configure {other options, like -mkl} --with-custom=/path/to/racomp/patch
+4.) Build rayleigh as usual
+
+When editing:
+Grab original code from src_copy
+Place new code in patch_fredy (do not recreate subdirectory structure)
+
+When compiling on summit, we just need to compile, not optimize.
+ml gcc impi mkl
+./configure -devel -mkl
+make
+
+
